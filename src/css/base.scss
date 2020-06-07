@@ -12,12 +12,16 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 20em;
-  height: 20em;
-  width: 80em;
+  height: 13em;
+  width: 40em;
+  padding: 8px;
+  background-color: #343a40;
+  border: 3px solid #ee6c4d;
+  border-radius: 7px;
+  box-shadow: 5px 7px 7px 0px rgba(0, 0, 0, 0.75);
 }
 
 #login-button {
-  display: block;
   margin-left: 10em;
   margin-top: 4em;
   height: 8em;
@@ -28,17 +32,9 @@ body {
   height: 8em;
 }
 
-// #login-container {
-//   margin-top: 7em;
-//   background-repeat: repeat;
-//   background-size: contain;
-//   margin-bottom: 20em;
-//   height: 25em;
-// }
-
-// h1 {
-  
-// }
+.login-text {
+  color: $primary-font-color;
+}
 
 .hide {
   display: none;
