@@ -1,7 +1,7 @@
 class Agent {
-    constructor() {
+  constructor() {
 
-    }
+  }
 }
 
 export default Agent;
