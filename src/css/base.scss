@@ -1,7 +1,47 @@
-/* This is an example of using Sass, otherwise plain CSS works too*/
-$primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
-;
+@import "variables";
+@import "mixins";
 
 body {
-  background: $primary-background;
+  @include background-image($login-background);
+  font-family: $primary-font;
 }
+
+
+.login-background {
+  margin-top: 7em;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20em;
+  height: 20em;
+  width: 80em;
+}
+
+#login-button {
+  display: block;
+  margin-left: 10em;
+  margin-top: 4em;
+  height: 8em;
+  width: 7em;
+}
+
+.login-inputs {
+  height: 8em;
+}
+
+// #login-container {
+//   margin-top: 7em;
+//   background-repeat: repeat;
+//   background-size: contain;
+//   margin-bottom: 20em;
+//   height: 25em;
+// }
+
+// h1 {
+  
+// }
+
+.hide {
+  display: none;
+}
+
+
