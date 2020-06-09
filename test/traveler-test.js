@@ -1,94 +1,109 @@
 import chai from 'chai';
 const expect = chai.expect;
+const spies = require('chai-spies');
 import Traveler from '../src/traveler';
-// use spies within this suite
+import User from '../src/user';
+chai.use(spies);
 
-let trip1, trip2, trip3, trip4, trip5, tripsData, destination1, destination2, destinationsData, traveler;
+let trip1, trip2, trip3, trip4, trip5, trip6, trip7, tripsData, destination1, destination2, destinationsData, traveler;
 
 describe('Traveler', () => {
 
   beforeEach(() => {
     trip1 = {
-      "id": 20,
-      "userID": 41,
-      "destinationID": 19,
-      "travelers": 4,
-      "date": "2020/10/05",
-      "duration": 6,
+      "id": 31,
+      "userID": 11,
+      "destinationID": 33,
+      "travelers": 3,
+      "date": "2020/12/19",
+      "duration": 15,
       "status": "approved",
       "suggestedActivities": []
-    },
-
+    }
     trip2 = {
-      "id": 160,
-      "userID": 41,
-      "destinationID": 28,
-      "travelers": 6,
-      "date": "2019/10/12",
-      "duration": 17,
+      "id": 40,
+      "userID": 29,
+      "destinationID": 50,
+      "travelers": 3,
+      "date": "2020/10/31",
+      "duration": 13,
       "status": "approved",
       "suggestedActivities": []
-    },
-
+    }
     trip3 = {
-      "id": 181,
-      "userID": 41,
-      "destinationID": 23,
-      "travelers": 4,
-      "date": "2019/11/29",
-      "duration": 7,
-      "status": "approved",
-      "suggestedActivities": []
-    },
-
-    trip4 = {
-      "id": 182,
-      "userID": 9,
-      "destinationID": 45,
-      "travelers": 6,
-      "date": "2021/01/15",
-      "duration": 5,
-      "status": "approved",
-      "suggestedActivities": []
-    },
-
-    trip5 = {
-      "id": 183,
-      "userID": 41,
-      "destinationID": 10,
-      "travelers": 4,
-      "date": "2020/06/07",
+      "id": 41,
+      "userID": 3,
+      "destinationID": 25,
+      "travelers": 3,
+      "date": "2020/08/30",
       "duration": 11,
+      "status": "approved",
+      "suggestedActivities": []
+    }
+    trip4 = {
+      "id": 42,
+      "userID": 11,
+      "destinationID": 32,
+      "travelers": 1,
+      "date": "2020/08/08",
+      "duration": 14,
+      "status": "approved",
+      "suggestedActivities": []
+    }
+    trip5 = {
+      "id": 42,
+      "userID": 11,
+      "destinationID": 32,
+      "travelers": 1,
+      "date": "2019/08/08",
+      "duration": 14,
+      "status": "approved",
+      "suggestedActivities": []
+    }
+    trip6 = {
+      "id": 42,
+      "userID": 11,
+      "destinationID": 32,
+      "travelers": 1,
+      "date": "2020/06/07",
+      "duration": 14,
+      "status": "approved",
+      "suggestedActivities": []
+    }
+    trip7 = {
+      "id": 45,
+      "userID": 12,
+      "destinationID": 37,
+      "travelers": 1,
+      "date": "2020/02/28",
+      "duration": 14,
       "status": "pending",
       "suggestedActivities": []
     }
 
-    tripsData = [trip1, trip2, trip3, trip4, trip5];
+    tripsData = [trip1, trip2, trip3, trip4, trip5, trip6];
 
     destination1 = {
-      "alt": "overview of city buildings with a clear sky",
-      "destination": "Lima, Peru",
-      "estimatedFlightCostPerPerson": 400,
-      "estimatedLodgingCostPerDay": 70,
-      "id": 1,
-      "image": "https://images.unsplash.com/photo-1489171084589-9b5031ebcf9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd"
+      "id": 32,
+      "destination": "Kathmandu, Nepal",
+      "estimatedLodgingCostPerDay": 45,
+      "estimatedFlightCostPerPerson": 1200,
+      "image": "https://images.unsplash.com/photo-1558799401-1dcba79834c2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80",
+      "alt": "temple with buntings during daytime"
     },
-
     destination2 = {
-      "alt": "city with boats on the water during the day time",
-      "destination": "Stockholm, Sweden",
-      "estimatedFlightCostPerPerson": 780,
-      "estimatedLodgingCostPerDay": 100,
-      "id": 2,
-      "image": "https://images.unsplash.com/photo-1560089168-6516081f5bf1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&aut"
+      "id": 33,
+      "destination": "Brussels, Belgium",
+      "estimatedLodgingCostPerDay": 1000,
+      "estimatedFlightCostPerPerson": 110,
+      "image": "https://images.unsplash.com/photo-1559113202-c916b8e44373?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
+      "alt": "brown concrete gate"
     }
-
     destinationsData = [destination1, destination2]
-    
     traveler = new Traveler({
-      "id": 41,
-      "name": "Wadsworth Caddie",
-      "travelerType": "photographer"
+      "id": 11,
+      "name": "Joy Dovington",
+      "travelerType": "history buff"
     }, tripsData, destinationsData)
   });
 
@@ -101,7 +116,7 @@ describe('Traveler', () => {
   });
 
   it('should have a property that contains that users trips', () => {
-    expect(traveler.usersTrips).to.deep.equal([trip1, trip2, trip3, trip5])
+    expect(traveler.usersTrips).to.deep.equal([trip1, trip4, trip5, trip6])
   });
 
   it('should be able to calculate the total amount they spent so far', () => {
@@ -109,14 +124,14 @@ describe('Traveler', () => {
   });
 
   it('should be able to return trips that have already passed', () => {
-    expect(traveler.displayPreviousTrips()).to.deep.equal([trip2, trip3])
+    expect(traveler.displayPreviousTrips()).to.deep.equal([trip5])
   })
 
   it('should be able to return trips that are currently taking place', () => {
-    expect(traveler.displayPresentTrips()).to.deep.equal([trip5])
+    expect(traveler.displayPresentTrips()).to.deep.equal([trip6])
   })
 
   it('should be able to return trips that are in the future', () => {
-    expect(traveler.displayUpcomingTrips()).to.deep.equal([trip1])
+    expect(traveler.displayUpcomingTrips()).to.deep.equal([trip1, trip4])
   })
 })
