@@ -7,6 +7,19 @@ class Traveler extends User {
     this.usersTrips = this.tripsData.filter(usertrip => usertrip.userID === this.id);
   }
 
+    async makeTripRequest(thisTrip) {
+      let res = await window.fetch("https://fe-apps.herokuapp.com/api/v1/travel-tracker/data/trips/trips", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(thisTrip),
+      })
+      let req = await res.json();
+      console.log(req)
+      this.usersTrips.push(thisTrip);
+    }
+
   calculateTotalSpent() {
     let approvedTrips = this.usersTrips.filter(trip => trip.status === 'approved' && trip.date.includes('2020'));
     return approvedTrips.reduce((total, currentTrip) => {
