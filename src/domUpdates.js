@@ -18,7 +18,7 @@ let domUpdates = {
   },
 
   loadTravelerPage(travelerId) {
-    let thisUser = travelersData.travelers.find(user => user.id == travelerId);
+    let thisUser = travelersData.travelers.find(user => user.id === travelerId);
     currentUser = new Traveler(thisUser, tripsData, destinationsData);
     this.loadTravelerMenu()
     this.loadDestinationMenu();
