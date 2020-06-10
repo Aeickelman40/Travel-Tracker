@@ -130,7 +130,7 @@ let domUpdates = {
     allRequests.forEach(request => {
       let thisTrip = new Trip(request, destinationsData)
       let thisUser = travelersData.travelers.find(user => user.id === request.userID)
-      requestTable.insertAdjacentHTML('beforeend',
+      agentSearchContainer.insertAdjacentHTML('beforeend',
         `<tr class='request-row request${request.id}'>
           <td>${thisUser.name}</td>
           <td>${request.date}</td>

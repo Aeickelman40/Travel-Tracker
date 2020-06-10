@@ -56,7 +56,6 @@ function loginHelper() {
 }
 
 function logIn(username, password) {
-  // be sure to change pw back to travel 2020!!!!
   if (username.includes('traveler') && password === 'travel2020') {
     loginContainer.classList.add('hide');
     travelerContainer.classList.remove('hide');

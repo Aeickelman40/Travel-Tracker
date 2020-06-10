@@ -6,7 +6,11 @@ body {
   font-family: $primary-font;
 }
 
-h1 {
+h1,
+p,
+.traveler-section, 
+.request-table, 
+.agent-search-page {
   color: $secondary-font-color;
 }
 
