@@ -6,6 +6,25 @@ body {
   font-family: $primary-font;
 }
 
+h1 {
+  color: $secondary-font-color;
+}
+
+button {
+  @include rounded-corners(3px);
+
+    &:hover {
+      background-color: $hover-color;
+    }
+}
+.login-background, 
+.destinations-card {
+  padding: 8px;
+  background-color: #343a40;
+  border: 3px solid #ee6c4d;
+  @include rounded-corners(4px);
+  box-shadow: 5px 7px 7px 0px rgba(0, 0, 0, 0.75);
+}
 
 .login-background {
   margin-top: 7em;
@@ -14,11 +33,6 @@ body {
   margin-bottom: 20em;
   height: 13em;
   width: 40em;
-  padding: 8px;
-  background-color: #343a40;
-  border: 3px solid #ee6c4d;
-  border-radius: 7px;
-  box-shadow: 5px 7px 7px 0px rgba(0, 0, 0, 0.75);
 }
 
 #login-button {
@@ -34,6 +48,33 @@ body {
 
 .login-text {
   color: $primary-font-color;
+}
+
+.destinations-card {
+  background-color: #343a40;
+  border: 3px solid #ee6c4d;
+  padding-bottom: 10px;
+  width: 400px;
+  align-items: center;
+  margin-top: 30px;
+  margin-left: 18px;
+  color: $secondary-font-color;
+}
+
+.card-picture {
+  height: 200px;
+  margin: 10px 2% 10px 2%;
+  width: 95%;
+}
+
+.agent-search-page {
+    background-color: #343a40;
+    border: 3px solid #ee6c4d;
+    padding-bottom: 10px;
+    width: 400px;
+    align-items: center;
+    margin-top: 30px;
+    margin-left: 18px;
 }
 
 .hide {

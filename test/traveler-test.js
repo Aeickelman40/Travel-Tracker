@@ -1,14 +1,12 @@
 import chai from 'chai';
 const expect = chai.expect;
-const spies = require('chai-spies');
+
 import Traveler from '../src/traveler';
 import User from '../src/user';
-chai.use(spies);
 
 let trip1, trip2, trip3, trip4, trip5, trip6, trip7, tripsData, destination1, destination2, destinationsData, traveler;
 
 describe('Traveler', () => {
-
   beforeEach(() => {
     trip1 = {
       "id": 31,
@@ -81,7 +79,7 @@ describe('Traveler', () => {
       "suggestedActivities": []
     }
 
-    tripsData = [trip1, trip2, trip3, trip4, trip5, trip6];
+    tripsData = [trip1, trip2, trip3, trip4, trip5, trip6, trip7];
 
     destination1 = {
       "id": 32,
@@ -99,7 +97,9 @@ describe('Traveler', () => {
       "image": "https://images.unsplash.com/photo-1559113202-c916b8e44373?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
       "alt": "brown concrete gate"
     }
+
     destinationsData = [destination1, destination2]
+
     traveler = new Traveler({
       "id": 11,
       "name": "Joy Dovington",
@@ -125,13 +125,14 @@ describe('Traveler', () => {
 
   it('should be able to return trips that have already passed', () => {
     expect(traveler.displayPreviousTrips()).to.deep.equal([trip5])
-  })
+  });
 
   it('should be able to return trips that are currently taking place', () => {
     expect(traveler.displayPresentTrips()).to.deep.equal([trip6])
-  })
+  });
 
   it('should be able to return trips that are in the future', () => {
     expect(traveler.displayUpcomingTrips()).to.deep.equal([trip1, trip4])
-  })
+  });
+
 })

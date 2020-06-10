@@ -1,4 +1,7 @@
 @mixin background-image($background-image) {
-    background-image: url($background-image);
-    
+    background-image: url($background-image);  
+}
+
+@mixin rounded-corners($radius) {
+    border-radius: $radius;
 }

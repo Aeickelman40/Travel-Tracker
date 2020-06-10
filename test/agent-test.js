@@ -127,7 +127,7 @@ describe('Agent', () => {
     expect(agent).to.be.an.instanceOf(Agent);
   })
 
-  it('should be able to search for a users details', () => {
+  it.skip('should be able to search for a users details', () => {
     let traveler1 = {
       "id": 1,
       "name": "Ham Leadbeater",
@@ -147,11 +147,11 @@ describe('Agent', () => {
     expect(agent.searchUserDetails('ten', travelersData)).to.deep.equal([traveler2, traveler3])
   });
 
-  it('should be able to calculate their income for the year', () => {
+  it.skip('should be able to calculate their income for the year', () => {
     expect(agent.calculateYearsIncome()).to.deep.equal(3993)
   });
 
-  it('should be able to display all of todays trips', () => {
+  it.skip('should be able to display all of todays trips', () => {
     expect(agent.displayTodaysTrips()).to.deep.equal([trip2, trip3, trip6])
   });
 })

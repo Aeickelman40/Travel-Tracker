@@ -26,7 +26,31 @@
       <button type='button' name='login-button' id='login-button' alt='Click this button to log in.'>LOG IN</button>
     </section>
   </section>
-  <section id='traveler-container' class='hide'>Traveler</section>
-  <section id='agent-container' class='hide'>Agent</section>
+  <section id='traveler-container' class='hide'>Traveler
+    <button class='traveler-button all-destinations-button'>All Destinations</button>
+    <button class='traveler-button my-trips-button'>My Trips Information</button>
+    <button class='submit-request-button'></button>
+    <section class='destinations-card'></section>     
+  </section>
+  <section id='agent-container' class='hide'>Agent
+    <button class='traveler-button agent-button pending-requests-button'>Pending Requests</button>
+    <button class='traveler-button agent-button search-users-button'>Search Users</button>
+  <section class='agent-search-page hide'>
+    <section class='search-results-table'>
+      <section class='single-search-result'></section>
+    </section>
+  </section>
+    <table class='request-table'>
+      <th class='request-row-heading'>Name</th>
+      <th class='request-row-heading'>Date</th>
+      <th class='request-row-heading'>Duration(days)</th>
+      <th class='request-row-heading'>Trip Cost</th>
+      <th class='request-row-heading'>Approve</th>
+      <th class='request-row-heading'>Deny</th>
+      <td><button class='approve-button'>Approve Request</button></td>
+      <td><button class='deny-button'>Deny Request</button></td>
+    </table>
+  </section>
+  </section>
   </body>
 </html>

@@ -12,7 +12,7 @@ class Trip {
   }
 
   calculateEstimatedCost() {
-    let thisDestination = this.destinationsData.find(location => location.id === this.destinationID);
+    let thisDestination = this.destinationsData.destinations.find(location => location.id === this.destinationID);
     let flightCost = thisDestination.estimatedFlightCostPerPerson * this.travelers;
     let lodgingCost = thisDestination.estimatedLodgingCostPerDay * this.duration;
     let totalCost = Math.floor((flightCost + lodgingCost) * 1.1)
@@ -20,7 +20,7 @@ class Trip {
   }
 
   returnDestinationDetails() {
-    return this.destinationsData.find(destination => destination.id === this.destinationID)
+    return this.destinationsData.destinations.find(destination => destination.id === this.destinationID)
   }
 }
 
