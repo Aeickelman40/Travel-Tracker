@@ -50,8 +50,6 @@ let allTripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/da
 let allDestinationsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/data/destinations/destinations')
   .then(response => response.json());
 
-// let travelersData, tripsData, destinationsData, travelerId;
-
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
   .then(data => {
     travelersData = data[0];
