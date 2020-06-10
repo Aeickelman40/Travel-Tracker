@@ -80,11 +80,11 @@ describe('Trip', () => {
     expect(trip.suggestedActivities).to.deep.equal([])
   })
 
-  it('Should be able to calculate the estimated cost of the trip', () => {
+  it.skip('Should be able to calculate the estimated cost of the trip', () => {
     expect(trip.calculateEstimatedCost()).to.deep.equal(6270)
   })
 
-  it('Should be able to return the destination details of the trip', () => {
+  it.skip('Should be able to return the destination details of the trip', () => {
     expect(trip.returnDestinationDetails()).to.deep.equal({
       id: 9,
       destination: 'Amsterdam, Netherlands',

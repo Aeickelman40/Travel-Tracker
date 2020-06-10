@@ -19,9 +19,9 @@ class User {
 
   displayRequests() {
     if (this.id === 0) {
-      return this.tripsData.filter(trip => trip.status === 'pending')
+      return this.tripsData.trips.filter(trip => trip.status === 'pending')
     } else {
-      return this.tripsData.filter(trip => trip.status === 'pending' && trip.userID === this.id)
+      return this.tripsData.trips.filter(trip => trip.status === 'pending' && trip.userID === this.id)
     }
   }
 

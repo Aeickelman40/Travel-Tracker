@@ -1,24 +1,29 @@
 import User from './user.js';
 import Trip from './trip.js';
+var moment = require('moment')
 
 class Traveler extends User {
   constructor(user, tripsData, destinationsData) {
     super(user, tripsData, destinationsData)
-    this.usersTrips = this.tripsData.filter(usertrip => usertrip.userID === this.id);
+    this.usersTrips = this.tripsData.trips.filter(usertrip => usertrip.userID === this.id);
   }
 
-    async makeTripRequest(thisTrip) {
-      let res = await window.fetch("https://fe-apps.herokuapp.com/api/v1/travel-tracker/data/trips/trips", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(thisTrip),
+  makeTripRequest(thisTrip) {
+    fetch("https://fe-apps.herokuapp.com/api/v1/travel-tracker/data/trips/trips", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        thisTrip
+      }),
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log('Request success: ', json)
       })
-      let req = await res.json();
-      console.log(req)
-      this.usersTrips.push(thisTrip);
-    }
+      .catch(err => console.log('Request failure: ', err));
+  }
 
   calculateTotalSpent() {
     let approvedTrips = this.usersTrips.filter(trip => trip.status === 'approved' && trip.date.includes('2020'));
