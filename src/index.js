@@ -57,13 +57,13 @@ function loginHelper() {
 
 function logIn(username, password) {
   // be sure to change pw back to travel 2020!!!!
-  if (username.includes('traveler') && password === '') {
+  if (username.includes('traveler') && password === 'travel2020') {
     loginContainer.classList.add('hide');
     travelerContainer.classList.remove('hide');
     domUpdates.transferData(destinationsData, tripsData, travelersData)
     travelerId = Number(username.slice(8));
     domUpdates.loadTravelerPage(travelerId);
-  } else if (username === 'agent' && password === '') {
+  } else if (username === 'agent' && password === 'travel2020') {
     loginContainer.classList.add('hide');
     agentContainer.classList.remove('hide');
     domUpdates.transferData(destinationsData, tripsData, travelersData)
