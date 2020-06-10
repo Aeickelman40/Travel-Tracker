@@ -9,7 +9,7 @@ class Agent extends User {
 
   approveTripRequest(tripID) {
     let thisTrip = {
-      "id": tripID,
+      "id": +tripID,
       "status": "approved"
     }
     fetch("https://fe-apps.herokuapp.com/api/v1/travel-tracker/data/trips/updateTrip", {
@@ -17,9 +17,9 @@ class Agent extends User {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: JSON.stringify(
         thisTrip
-      }),
+      ),
     })
       .then(response => response.json())
       .then(json => {
@@ -30,16 +30,16 @@ class Agent extends User {
 
   deleteUpcomingTrip(tripID) {
     let thisTrip = {
-      "id": tripID
+      "id": +tripID
     }
     fetch("https://fe-apps.herokuapp.com/api/v1/travel-tracker/data/trips/trips", {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: JSON.stringify(
         thisTrip
-      }),
+      ),
     })
       .then(response => response.json())
       .then(json => {

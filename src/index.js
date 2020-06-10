@@ -1,5 +1,7 @@
 import './css/base.scss';
 import domUpdates from './domUpdates.js';
+import Agent from './agent.js'
+import Traveler from './traveler.js'
 
 const loginContainer = document.querySelector('#login-container');
 const travelerContainer = document.querySelector('#traveler-container');
@@ -8,17 +10,31 @@ const usernameInput = document.querySelector('#username-input');
 const passwordInput = document.querySelector('#password-input');
 const loginButton = document.querySelector('#login-button');
 const loginError = document.querySelector('#login-error');
-// const allDestinationsButton = document.querySelector('.all-destinations-button');
-// const myTripsButton = document.querySelector('.my-trips-button');
 const pendingRequestsButton = document.querySelector('.pending-requests-button');
 const searchUsersButton = document.querySelector('.search-users-button');
-// const requestTable = document.querySelector('.request-table')
-// const approveButton = document.querySelector('.approve-button');
-// const denyButton = document.querySelector('.deny-button')
 const destinationsCard = document.querySelector('.destinations-card');
-// const submitRequestButton = document.querySelector('.submit-request-button');
+const submitRequestButton = document.querySelector('.submit-request-button');
+
+let currentUser, travelersData, tripsData, destinationsData;
 
 loginButton.addEventListener('click', loginHelper);
+
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('submit-request-button')) {
+    domUpdates.getRequestData(event.target.id, currentUser);
+  } 
+  if (event.target.classList.contains('card-picture')) {
+    domUpdates.openTripRequestForm(event.target.parentNode.id)
+  }
+  if (event.target.classList.contains('approve-button')) {
+    currentUser.approveTripRequest(event.target.id)
+    window.alert('Request successfully approved!')
+  }
+  if (event.target.classList.contains('deny-button')) {
+    currentUser.deleteUpcomingTrip(event.target.id)
+    window.alert('Request successfully deleted!')
+  }
+})
 
 pendingRequestsButton.addEventListener('click', () => domUpdates.updateTripsData());
 searchUsersButton.addEventListener('click', () => domUpdates.loadAgentSearchPage())
@@ -33,8 +49,6 @@ let allTripsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/da
 
 let allDestinationsData = fetch('https://fe-apps.herokuapp.com/api/v1/travel-tracker/data/destinations/destinations')
   .then(response => response.json());
-
-let travelersData, tripsData, destinationsData, travelerId;
 
 Promise.all([allTravelersData, allTripsData, allDestinationsData])
   .then(data => {
@@ -57,16 +71,23 @@ function loginHelper() {
 
 function logIn(username, password) {
   if (username.includes('traveler') && password === 'travel2020') {
+    let travelerId = Number(username.slice(8));
+    let thisUser = travelersData.travelers.find(user => user.id == travelerId);
+    currentUser = new Traveler(thisUser, tripsData, destinationsData);
     loginContainer.classList.add('hide');
     travelerContainer.classList.remove('hide');
     domUpdates.transferData(destinationsData, tripsData, travelersData)
-    travelerId = Number(username.slice(8));
-    domUpdates.loadTravelerPage(travelerId);
+    domUpdates.loadTravelerPage(travelerId, currentUser);
   } else if (username === 'agent' && password === 'travel2020') {
+    currentUser = new Agent({
+      "id": 0,
+      "name": 'Alex Eickelman',
+      "travelerType": 'Agent'
+    }, tripsData, destinationsData)
     loginContainer.classList.add('hide');
     agentContainer.classList.remove('hide');
     domUpdates.transferData(destinationsData, tripsData, travelersData)
-    domUpdates.loadAgentPage();
+    domUpdates.loadAgentPage(currentUser);
   } else {
     loginError.classList.remove('hide');
   }
@@ -76,27 +97,3 @@ function removeErrorMessage() {
   loginError.classList.add('hide');
 }
 
-function loadDestinationMenu() {
-  const cardPhoto = document.querySelector('.card-picture');
-  cardPhoto.addEventListener('click', this.openTripRequestForm)
-  destinationsData.destinations.forEach(destination => {
-    destinationsCard.insertAdjacentHTML('beforeend',
-      `<section id='${destination.id}' 'destinations-card'>
-          <header data-id='${destination.id}'>
-          </header>
-          <span data-id='${destination.id}' class='destination-name'>${destination.destination}</span>
-          <img data-id='${destination.id}' tabindex='0' class='card-picture book-destination' src='${destination.image}' alt='${destination.alt}'>
-          <p class="card-cost-info flight-cost">Flight Cost per Person: $${destination.estimatedFlightCostPerPerson}</p>
-          <p class="card-cost-info lodging-cost">Lodging Cost per Day: $${destination.estimatedLodgingCostPerDay}</p>
-          <section class='request-form'></section>
-        </section>`
-    )
-  })
-  travelerContainer.insertAdjacentHTML('beforebegin', `<section class="description-background-flex">
-    <section class='card destination-description'>
-    <h1 align="center">Book your flight to the following destinations!</h1>
-    <p align="center">(Where would you like to go today? Click on an image to get there!)</p>
-    </section>
-    </section>`)
-  domUpdates.openTripRequestForm(event.target.dataset.id)
-}

@@ -14,9 +14,9 @@ class Traveler extends User {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: JSON.stringify(
         thisTrip
-      }),
+      ),
     })
       .then(response => response.json())
       .then(json => {
