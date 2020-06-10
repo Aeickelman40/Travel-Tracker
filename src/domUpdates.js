@@ -2,7 +2,7 @@ import Agent from './agent.js';
 import Traveler from './traveler.js';
 import Trip from './trip.js';
 
-let currentUser, destinationsData, tripsData, travelersData, dateInput, durationInput, travelersAmountInput;
+let destinationsData, tripsData, travelersData, dateInput, durationInput, travelersAmountInput;
 
 const travelerContainer = document.querySelector('#traveler-container');
 const agentContainer = document.querySelector('#agent-container');
@@ -19,44 +19,43 @@ let domUpdates = {
     travelersData = travelers;
   },
 
-  loadTravelerPage(travelerId) {
+  loadTravelerPage(travelerId, currentUser) {
     let thisUser = travelersData.travelers.find(user => user.id == travelerId);
     currentUser = new Traveler(thisUser, tripsData, destinationsData);
-    this.loadTravelerMenu()
+    this.loadTravelerMenu(currentUser)
     this.loadDestinationMenu();
   },
 
-  loadAgentPage() {
+  loadAgentPage(currentUser) {
     currentUser = new Agent({
       "id": 0,
       "name": 'Alex Eickelman',
       "travelerType": 'Agent'
     }, tripsData, destinationsData)
-    this.loadAgentNavBar()
-    this.loadAgentRequestsPage()
+    this.loadAgentNavBar(currentUser)
+    this.loadAgentRequestsPage(currentUser)
+    console.log(currentUser)
   },
 
-  loadTravelerMenu() {
-    travelerContainer.insertAdjacentHTML('beforeend', `
-      <section class='traveler-section'>Welcome ${currentUser.name}!</section>
+  loadTravelerMenu(currentUser) {
+    travelerContainer.insertAdjacentHTML('beforebegin', `
+      <section class='traveler-section'>Welcome ${currentUser.name}, so far this year you have spent $${currentUser.calculateTotalSpent()} on vacations!</section>
     `)
   },
 
   loadDestinationMenu() {
     destinationsData.destinations.forEach(destination => {
       destinationsCard.insertAdjacentHTML('beforeend', 
-        `<sectionid='${destination.id}' 'destinations-card'>
+        `<section id='${destination.id}' 'destinations-card'>
           <header data-id='${destination.id}'>
           </header>
           <span data-id='${destination.id}' class='destination-name'>${destination.destination}</span>
           <img data-id='${destination.id}' tabindex='0' class='card-picture book-destination' src='${destination.image}' alt='${destination.alt}'>
           <p class="card-cost-info flight-cost">Flight Cost per Person: $${destination.estimatedFlightCostPerPerson}</p>
           <p class="card-cost-info lodging-cost">Lodging Cost per Day: $${destination.estimatedLodgingCostPerDay}</p>
-          <sectionclass='request-form'></div>
+          <section class='request-form'></div>
         </div>`
       )
-      const cardPhoto = document.querySelector('.card-picture');
-      cardPhoto.addEventListener('click', this.openTripRequestForm)
     })
     travelerContainer.insertAdjacentHTML('beforebegin', `<section class="description-background-flex">
     <section class='card destination-description'>
@@ -66,7 +65,8 @@ let domUpdates = {
     </div>`)
   },
 
-  openTripRequestForm(dataId, flightCost, lodgingCost) {
+  openTripRequestForm(dataId) {
+    console.log(dataId)
     travelerContainer.insertAdjacentHTML('beforebegin',
       `<label class='form-label'>Date(YYYY/MM/DD):</label>
       <input id='date' type='text' class='request-inputs' size='30'>
@@ -74,32 +74,28 @@ let domUpdates = {
       <input id='duration' type='text' class='request-inputs req-estimate-inputs' size='30'>
       <label for='travelersNum' class='form-label'>Number of Travelers:</label>
       <input id='travelersNum' type='text' class='request-inputs req-estimate-inputs' size='30'>
-      <button data-id='${dataId}' class='traveler-button submit-request-button'>Submit Trip Request</button>
+      <button id='${dataId}' class='traveler-button submit-request-button'>Submit Trip Request</button>
       <p class='input-missing-warning denied-message'></p>
       `)
-    const submitRequestButton = document.querySelector('.submit-request-button');
-    submitRequestButton.addEventListener('click', this.getRequestData);
   },
 
-  getRequestData() {
-    debugger
+  getRequestData(id, currentUser) {
     dateInput = document.querySelector('#date');
     durationInput = document.querySelector('#duration');
     travelersAmountInput = document.querySelector('#travelersNum');
     let date = dateInput.value
-    console.log(date)
     let duration = durationInput.value
-    console.log(duration)
     let travelers = travelersAmountInput.value
-    console.log(travelers)
     if (date.length && duration.length && travelers.length) {
-      this.createRequestFormat(date, duration, travelers, event.target.dataset.id)
+
+      this.createRequestFormat(date, duration, travelers, id, currentUser)
     } else {
       window.alert('Please Enter All Request Criteria!')
     }
   },
 
-  createRequestFormat(date, duration, travelers, id) {
+  createRequestFormat(date, duration, travelers, id, currentUser) {
+    console.log(id)
     let completedRequest = {
       "id": Date.now(),
       "userID": currentUser.id,
@@ -116,7 +112,7 @@ let domUpdates = {
   },
 
 
-  loadAgentNavBar() {
+  loadAgentNavBar(currentUser) {
     agentContainer.insertAdjacentHTML('beforebegin',  `
       <section class='traveler-section'>Welcome ${currentUser.name}!
         <section class='years-income'>You've earned $${currentUser.calculateYearsIncome()} so far this year! Includes 10% commision fee. </section>
@@ -124,7 +120,7 @@ let domUpdates = {
     `)
   },
   
-  loadAgentRequestsPage() {
+  loadAgentRequestsPage(currentUser) {
     let allRequests = currentUser.displayRequests()
     agentSearchContainer.classList.remove('hide')
     allRequests.forEach(request => {
@@ -136,19 +132,14 @@ let domUpdates = {
           <td>${request.date}</td>
           <td>${request.duration}</td>
           <td>$${thisTrip.calculateEstimatedCost()}</td>
-          <td><button data-id='${request.id}' class='approve-button'>Approve Request</button></td>
-          <td><button data-id='${request.id}' class='deny-button'>Deny Request</button></td>
+          <td><button id='${request.id}' class='approve-button'>Approve Request</button></td>
+          <td><button id='${request.id}' class='deny-button'>Deny Request</button></td>
         `)
     })
     agentSearchContainer.insertAdjacentHTML('beforebegin',
       `<section class='pending-trips-container'>
       <h1 class='request-heading' align='center'>Current Outstanding Trip Requests:</h1>
-    </section>`)
-    const approveButton = document.querySelector('.approve-button');
-    const denyButton = document.querySelector('.deny-button');
-    approveButton.addEventListener('click', currentUser.approveTripRequest(Number(event.target.dataset.id)));
-    denyButton.addEventListener('click', currentUser.deleteUpcomingTrip(Number(event.target.dataset.id))); 
-    this.createAgentTodaysTripsTable()    
+    </section>`)  
   },
 
   loadAgentSearchPage() {
@@ -171,7 +162,7 @@ let domUpdates = {
     this.populateSearchResults(userSearch)
   },
 
-  populateSearchResults(userSearch) {
+  populateSearchResults(userSearch, currentUser) {
     let foundUsers = currentUser.searchUserDetails(userSearch, travelersData);
     agentSearchContainer.insertAdjacentHTML('beforebegin', `
         <table class="search-results-table">
@@ -191,7 +182,7 @@ let domUpdates = {
       pastTrips.forEach(pastTrip => {
         let thisTrip = new Trip(pastTrip, destinationsData)
         let thisDestination = thisTrip.returnDestinationDetails()
-        searchResultsContainer.insertAdjacentHTML('beforebegin',
+        searchResultsContainer.insertAdjacentHTML('beforeend',
           `<tr class='search-row'>
               <td>${thisUser.name}</td>
               <td>${thisDestination.destination}, Id#${thisTrip.id}</td>
@@ -233,17 +224,17 @@ let domUpdates = {
     })
   },
 
-  createAgentTodaysTripsTable() {
-    let todaysTrips = currentUser.displayTodaysTrips()
-    agentContainer.insertAdjacentHTML('beforebegin', `<section class='row-two-clear'>
-      <section class="todays-trips-container">
-      </section>
-      </section>
-      `)
-    const todaysTripsContainer = document.querySelector('.todays-trips-container')
-    todaysTripsContainer.insertAdjacentHTML('beforebegin',
-      `<h1 class="todays-trips-heading">There Are ${todaysTrips.length} Trips Currently in Progress:</h1>`)
-  }
+  // createAgentTodaysTripsTable(currentUser) {
+  //   let todaysTrips = currentUser.displayTodaysTrips()
+  //   agentContainer.insertAdjacentHTML('beforebegin', `<section class='row-two-clear'>
+  //     <section class="todays-trips-container">
+  //     </section>
+  //     </section>
+  //     `)
+  //   const todaysTripsContainer = document.querySelector('.todays-trips-container')
+  //   todaysTripsContainer.insertAdjacentHTML('beforebegin',
+  //     `<h1 class="todays-trips-heading">There Are ${todaysTrips.length} Trips Currently in Progress:</h1>`)
+  // }
 }
 
 export default domUpdates;
