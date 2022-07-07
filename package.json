@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "js-datepicker": "^5.14.2",
-    "moment": "^2.26.0"
+    "moment": "^2.29.4"
   }
 }
